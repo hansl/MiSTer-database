@@ -18,8 +18,13 @@ LATEST_VERSION=$(echo "$LATEST_RELEASE" | jq -r .tag_name)
 echo Latest version of GoLEm: "$LATEST_VERSION"
 
 # Check the version of GoLEm installed on the system.
-INSTALLED_VERSION=$(cat /media/fat/golem/version.txt || echo "0.0.0")
+INSTALLED_VERSION=$(cat /media/fat/golem/version.txt || echo "v0.0.0")
 echo Installed version of GoLEm: "$INSTALLED_VERSION"
+
+[ "$LATEST_RELEASE" == "" ] && {
+  echo "Failed to get latest release information from GitHub. Will try to run from disk."
+  LATEST_VERSION="$INSTALLED_VERSION"
+}
 
 if [ "$LATEST_VERSION" != "$INSTALLED_VERSION" ];
 then
